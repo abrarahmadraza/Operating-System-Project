@@ -61,20 +61,20 @@ int nextindexRR(int index,int tim)
 	j=q1_n;
 	k=index;
 	for(i=k;i<j;i++)
-						{
-							if(q1[i].arrival_time<=tim&&q1[i].remaining_time!=0)
-							{
-								return i;
-								break;
-							}
-							if(i==q1_n-1)
-							{
-								i=0;
-								j=k;
-							}
-							
-						}
-						return -1;
+	{
+		if(q1[i].arrival_time<=tim&&q1[i].remaining_time!=0)
+		{
+			return i;
+			break;
+		}
+		if(i==q1_n-1)
+		{
+			i=0;
+			j=k;
+		}
+		
+	}
+	return -1;
 						
 }
 int roundrobin(int tim)
