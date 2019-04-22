@@ -144,8 +144,7 @@ CONSOLE_SCREEN_BUFFER_INFO   csbi;
 m_hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
 if(GetConsoleScreenBufferInfo(m_hConsole, &csbi))
     m_currentConsoleAttr = csbi.wAttributes;
-//
-	cl;
+//  
 	cl;
 	pink();
 	font(20,40);

@@ -10,6 +10,10 @@
 
 #include <math.h>
 
+#include<windows.h>
+
+#include "graphity.h"
+
 #include <time.h>
 
 #define cl system("cls")
@@ -18,7 +22,7 @@ typedef char string[20];
 
 struct process {
   int burst_time;
-  int pid;
+  int process_id;
   int waiting_time;
   int turnaround_time;
   int remaining_time;
@@ -35,66 +39,119 @@ default_struct = {
   0
 };
 
-int nopq1, nopq2, q1_n = 0, q2_n = 0, i, j, quantum = 0, indexi = -1, k = 0, complete = 0, flagq1=-1, flagq2=-1;
-struct process * q1, * q2;
-void getinput();
+int number_of_process_in_queue1, number_of_process_in_queue2, index_queue1 , index_queue2 , i, j, quantum , indexi , k , complete , flag_queue1, flag_queue2;
+COORD xy;
+HANDLE h;
+struct process * queue1, * queue2;
 
 void getinput() {
-  printf("\n Total Number of Process in queue 1:\t");
-  scanf("%d", & nopq1);
-  printf("\n Total Number of Process in queue 2:\t");
-  scanf("%d", & nopq2);
-  //Allocatig Memory
-  q1 = (struct process * ) malloc(nopq1 * sizeof(struct process));
-  q2 = (struct process * ) malloc(nopq2 * sizeof(struct process));
-
-  printf("\n\t\tQueue 1\n=============================================\n\n");
+	index_queue1=0;index_queue2=0;quantum=0;indexi=-1;k=0;complete=0;flag_queue1=-1;flag_queue2=-1;
+	red();
+	cl;
+	gotoxy(20,5);
+	font(65,60);
+	printf("Welcome");
+	sleep(1);
+	cl;
+	cls();
+	loading(1);
+	font(20,30);
+	cls();
+	centre();
+  printf("Total Number of Process in queue 1:\t");
+  	centre();
+  	h=GetStdHandle(STD_OUTPUT_HANDLE);
+  	xy=cursorpos(h);
+    gotoxy(xy.X,xy.Y+1);
+  printf("\n\nTotal Number of Process in queue 2:\t");
+  
+    centre();
+  	h=GetStdHandle(STD_OUTPUT_HANDLE);
+  	xy=cursorpos(h);
+    gotoxy(xy.X+42,xy.Y);
+  scanf("%d", & number_of_process_in_queue1);
+  
+  centre();
+  	h=GetStdHandle(STD_OUTPUT_HANDLE);
+  	xy=cursorpos(h);
+    gotoxy(xy.X+42,xy.Y+1);
+  scanf("%d", & number_of_process_in_queue2);
+  
+  cl;
+  cls();
+  loading(1);
+  font(20,30);
+  //Allocatig Memory1
+  
+  queue1 = (struct process * ) malloc(number_of_process_in_queue1 * sizeof(struct process));
+  queue2 = (struct process * ) malloc(number_of_process_in_queue2 * sizeof(struct process));
+  
+  int i, random = (rand()) % (10000 + 1);  
   struct process p; //mediator variable
-  int i ;
+  
+  
+  printf("\n\t\t\t\t  Queue 1\n");
+  
   //Take Input
-
-  for (i = 0; i < nopq1; i++) {
-
-    printf("\n\t\tProcess %d\n=============================================\n\n", i + 1);
-    p.pid = (rand()) % (10000 + 1);
-    printf("Arrival Time:\t");
+	yellow();
+	printf("\n\t\tProcess");
+	printf("\t\tArrival Time");
+	printf("\t\tBurst Time");
+	green();
+	cls();
+  gotoxy(0,0);
+  gotoxy(40,3);
+   for (i = 0; i < number_of_process_in_queue1; i++) 
+   {
+   	printf("\n\t\tProcess %d", i + 1);
+    p.process_id = random++;
+    h=GetStdHandle(STD_OUTPUT_HANDLE);
+    xy=cursorpos(h);
+    gotoxy(40,xy.Y);
     scanf("%d", & p.arrival_time);
-    printf("\nBurst Time:\t");
+    gotoxy(60,xy.Y);
     scanf("%d", & p.burst_time);
     p.remaining_time = p.burst_time;
-    q1[q1_n++] = p;
-
-  }
-
+    queue1[index_queue1++] = p;
+    }
+    
   //Queue 2 input
-  printf("\n\t\tQueue 2\n=============================================\n\n");
-  for (i = 0; i < nopq2; i++) {
-
-    printf("\n\t\tProcess %d\n=============================================\n\n", i + 1);
-    p.pid = (rand()) % (10000 + 1);
-    printf("Arrival Time:\t");
+  red();
+  printf("\n\n\t\t\t\t  Queue 2\n");
+  yellow();
+	printf("\n\t\tProcess");
+	printf("\t\tArrival Time");
+	printf("\t\tBurst Time");
+	green();
+	cls();
+  for (i = 0; i < number_of_process_in_queue2; i++) {
+   	printf("\n\t\tProcess %d", i + 1);
+    p.process_id = random++;
+    h=GetStdHandle(STD_OUTPUT_HANDLE);
+    xy=cursorpos(h);
+    gotoxy(40,xy.Y);
     scanf("%d", & p.arrival_time);
-    printf("\nBurst Time:\t");
+    gotoxy(60,xy.Y);
     scanf("%d", & p.burst_time);
     p.remaining_time = p.burst_time;
-    q2[q2_n++] = p;
+    queue2[index_queue2++] = p;
 
   }
 
 }
 
 int nextindex(int ka, int tim) {
-  j = nopq2;
+  j = number_of_process_in_queue2;
   k = ka;
-  if (k == nopq2 - 1) {
+  if (k == number_of_process_in_queue2 - 1) {
     k = 0;
   }
   for (i = k; i < j; i++) {
-    if (q2[i].arrival_time <= tim && q2[i].remaining_time != 0) {
+    if (queue2[i].arrival_time <= tim && queue2[i].remaining_time != 0) {
       return i;
       break;
     }
-    if (i == nopq2 - 1) {
+    if (i == number_of_process_in_queue2 - 1) {
       i = 0;
       j = k;
     }
@@ -110,22 +167,22 @@ void process() {
   struct process * q;
   q = & default_struct;
   int time;
-  for (time = 0; complete != q1_n + q2_n; time++) {
-    for (i = 0; i < nopq1; i++) {
-      if (q1[i].arrival_time == time) {
+  for (time = 0; complete != index_queue1 + index_queue2; time++) {
+    for (i = 0; i < number_of_process_in_queue1; i++) {
+      if (queue1[i].arrival_time == time) {
         if (p->remaining_time == INT_MAX) {
-          p = & q1[i];
+          p = & queue1[i];
 
         }
 
-        if (q1[i].remaining_time < p-> remaining_time)
-          p = & q1[i];
+        if (queue1[i].remaining_time < p-> remaining_time)
+          p = & queue1[i];
       }
     }
-    //processing for q1
+    //processing for queue1
     if (p-> remaining_time != INT_MAX) {
       p-> remaining_time--;
-      flagq1=0;
+      flag_queue1=0;
       if (p-> remaining_time == 0) {
 
         complete++;
@@ -134,9 +191,9 @@ void process() {
         p = & default_struct;
         p-> remaining_time = INT_MAX;
 
-        for (j = 0; j < nopq1; j++) {
-          if (q1[j].remaining_time < p-> remaining_time && q1[j].arrival_time <= time && q1[j].remaining_time != 0) {
-            p = & q1[j];
+        for (j = 0; j < number_of_process_in_queue1; j++) {
+          if (queue1[j].remaining_time < p-> remaining_time && queue1[j].arrival_time <= time && queue1[j].remaining_time != 0) {
+            p = & queue1[j];
           }
         }
       }
@@ -155,12 +212,12 @@ void process() {
         }
       }
 
-      q = & q2[indexi];
+      q = & queue2[indexi];
 
       if (q-> arrival_time <= time && q-> remaining_time != 0) {
 
         q-> remaining_time--;
-        flagq2=0;
+        flag_queue2=0;
         if (q-> remaining_time == 0) {
           q-> completion_time = time;
           complete++;
@@ -189,40 +246,64 @@ void process() {
 
 void calculate() {
   int i;
-  for (i = 0; i < nopq1; i++) {
+  for (i = 0; i < number_of_process_in_queue1; i++) {
     
-    q1[i].waiting_time = q1[i].completion_time - (q1[i].arrival_time + q1[i].burst_time)+1;
-    q1[i].turnaround_time = q1[i].waiting_time + q1[i].burst_time;
+    queue1[i].waiting_time = queue1[i].completion_time - (queue1[i].arrival_time + queue1[i].burst_time)+1;
+    queue1[i].turnaround_time = queue1[i].waiting_time + queue1[i].burst_time;
   }
-  for (i = 0; i < nopq2; i++) {
+  for (i = 0; i < number_of_process_in_queue2; i++) {
     
-    q2[i].waiting_time = q2[i].completion_time - (q2[i].arrival_time + q2[i].burst_time)+1;
-    q2[i].turnaround_time = q2[i].waiting_time + q2[i].burst_time;
+    queue2[i].waiting_time = queue2[i].completion_time - (queue2[i].arrival_time + queue2[i].burst_time)+1;
+    queue2[i].turnaround_time = queue2[i].waiting_time + queue2[i].burst_time;
   }
 }
 
 void display(struct process * p, int size) {
-  printf("\nPId\t\tCompletion\t\tBurst Time\t\tWaiting Time\t\tTurnAround Time\t\tArrival");
-  printf("\n========================================================================================================================\n");
+  red();
+  font(16,20);
+  printf("\nPid\t\tCompletion\t\tBurst Time\t\tWaiting Time\t\tTurnAroundTime\t    Arrival");
+  blue();
+  cls();
   int i;
   for (i = 0; i < size; i++) {
-    printf("\n%d\t\t%d\t\t\t%d\t\t\t%d\t\t\t%d\t\t\t\t%d", p[i].pid, p[i].completion_time, p[i].burst_time, p[i].waiting_time, p[i].turnaround_time, p[i].arrival_time);
+    printf("\n %d\t\t   %d\t\t\t      %d\t\t\t  %d\t\t\t    %d\t\t    %d", p[i].process_id, p[i].completion_time, p[i].burst_time, p[i].waiting_time, p[i].turnaround_time, p[i].arrival_time);
   }
   printf("\n\n");
 }
 
 int main() {
+	settitle("OS PROJECT Q.52");
+	while(1)
+	{
+	fullscreen();
   getinput();
   process();
   calculate();
-  if(flagq1==0)
+  loading(2);
+  cl;
+  if(flag_queue1==0)
   {
-  printf("\n\t\tQueue 1\n=============================================\n\n");
-  display(q1, q1_n);
+  printf("\n\t\t\t\t\t\t\tQueue 1\n");
+  display(queue1, index_queue1);
   }
-   if(flagq2==0)
+  green();
+   if(flag_queue2==0)
   {
-  printf("\n\t\tQueue 2\n=============================================\n\n");
-  display(q2, q2_n);
+  printf("\n\t\t\t\t\t\t\tQueue 2\n");
+  display(queue2, index_queue2);
   }
+  printf("\n\n\nDo you want to continue?");
+  string s;
+  scanf("%s",s);
+  if(strcmp(s,"yes")==0)
+  {
+    fullscreen();
+  	continue;
+  	
+  }
+  else
+  {
+  	break;
+  }
+}
 }
