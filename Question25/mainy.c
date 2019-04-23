@@ -175,8 +175,6 @@ int roundrobin(int tim) {
 
     Process_for_RoundRobin->remaining_time--;
     time++;
-    printf("%d\n",time);
-    printf("%dr\n",Process_for_RoundRobin->remaining_time);
     lasttime = time;
     if (Process_for_RoundRobin->remaining_time == 0) {
 
@@ -353,7 +351,7 @@ int main() {
   getinput();
   process();
   calculate();
-  sleep(3);
+  loading(2);
   
   if (flagRoundRobin == 0) {
     printf("\n\t\t\t\tRound Robin\n");

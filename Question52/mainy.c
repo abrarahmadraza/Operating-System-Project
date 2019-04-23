@@ -58,24 +58,23 @@ void getinput() {
 	font(20,30);
 	cls();
 	centre();
-  printf("Total Number of Process in queue 1:\t");
+  printf("Total Number of Process in queue 2:\t");
   	centre();
   	h=GetStdHandle(STD_OUTPUT_HANDLE);
   	xy=cursorpos(h);
-    gotoxy(xy.X,xy.Y+1);
-  printf("\n\nTotal Number of Process in queue 2:\t");
+    gotoxy(xy.X,xy.Y-1);
+  printf("Total Number of Process in queue 1:\t");
     green();
     centre();
   	h=GetStdHandle(STD_OUTPUT_HANDLE);
   	xy=cursorpos(h);
     gotoxy(xy.X+42,xy.Y);
-  scanf("%d", & number_of_process_in_queue1);
-  
+  scanf("%d", & number_of_process_in_queue2);
   centre();
   	h=GetStdHandle(STD_OUTPUT_HANDLE);
   	xy=cursorpos(h);
-    gotoxy(xy.X+42,xy.Y+1);
-  scanf("%d", & number_of_process_in_queue2);
+    gotoxy(xy.X+42,xy.Y-1);
+  scanf("%d", & number_of_process_in_queue1);
   
   cl;
   cls();
