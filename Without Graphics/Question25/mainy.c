@@ -61,6 +61,10 @@ int nextindexRR(int index,int tim)
 {
 	j=q1_n;
 	k=index;
+	if(k==-1)
+	{
+		k=0;
+	}
 	for(i=k;i<j;i++)
 	{
 		if(q1[i].arrival_time<=tim&&q1[i].remaining_time!=0)
@@ -97,11 +101,11 @@ int roundrobin(int tim)
 		
 		p=&q1[indexRR];
 		flag1=0;
-		lasttime=time;
+		
 
 		p->remaining_time--;
 		time++;
-		
+		lasttime=time;
 		if(p->remaining_time==0)
 					{
 						
@@ -135,6 +139,10 @@ int nextindexP(int index,int tim)
 	int highprio=INT_MAX;
 	j=q2_n;
 	k=index;
+	if(k==-1)
+	{
+		k=0;
+	}
 	for(i=k;i<j;i++)
 						{
 							if(q2[i].arrival_time<=tim&&q2[i].remaining_time!=0&&q2[i].priority<highprio)
@@ -172,9 +180,10 @@ int priority(int tim)
 		}
 		q=&q2[indexP];
 		flag2=0;
-		lasttime=time;
+		
 		q->remaining_time--;
 		time++;
+		lasttime=time;
 		if(q->remaining_time==0)
 					{
 						
@@ -188,17 +197,22 @@ int priority(int tim)
 					}
 		
 	}
-	return --lasttime;
+	return lasttime;
 }
 
 int nextindexF(int index,int tim)
 {
 	j=q3_n;
 	k=index;
+	if(k==-1)
+	{
+		k=0;
+	}
 	for(i=k;i<j;i++)
 	{
 		if(q3[i].arrival_time<=tim&&q3[i].remaining_time!=0)
 		{
+			
 			return i;
 			break;
 		}
@@ -220,7 +234,7 @@ int FCFS(int tim)
 		if(indexF==-1)
 		{
 			indexF=nextindexF(indexF,time);
-			if(indexP==-1)
+			if(indexF==-1)
 			{
 				time++;
 				continue;
@@ -228,10 +242,10 @@ int FCFS(int tim)
 		}
 			r=&q3[indexF];
 			flag3=0;
-			lasttime=time;
+			
 			r->remaining_time--;
 			
-			time++;
+			time++;lasttime=time;
 		if(r->remaining_time==0)
 					{
 						
@@ -244,7 +258,7 @@ int FCFS(int tim)
 						continue;
 					}
 				}
-				return --lasttime;
+				return lasttime;
 }
 
 void process()

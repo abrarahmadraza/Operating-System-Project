@@ -129,7 +129,7 @@ void process() {
       if (p-> remaining_time == 0) {
 
         complete++;
-        p-> completion_time = time;
+        p-> completion_time = time+1;
         //find next shortest
         p = & default_struct;
         p-> remaining_time = INT_MAX;
@@ -162,7 +162,7 @@ void process() {
         q-> remaining_time--;
         flagq2=0;
         if (q-> remaining_time == 0) {
-          q-> completion_time = time;
+          q-> completion_time = time+1;
           complete++;
           quantum = 0;
 
@@ -190,12 +190,10 @@ void process() {
 void calculate() {
   int i;
   for (i = 0; i < nopq1; i++) {
-    
     q1[i].waiting_time = q1[i].completion_time - (q1[i].arrival_time + q1[i].burst_time)+1;
     q1[i].turnaround_time = q1[i].waiting_time + q1[i].burst_time;
   }
   for (i = 0; i < nopq2; i++) {
-    
     q2[i].waiting_time = q2[i].completion_time - (q2[i].arrival_time + q2[i].burst_time)+1;
     q2[i].turnaround_time = q2[i].waiting_time + q2[i].burst_time;
   }

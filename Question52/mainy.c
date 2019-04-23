@@ -64,7 +64,7 @@ void getinput() {
   	xy=cursorpos(h);
     gotoxy(xy.X,xy.Y+1);
   printf("\n\nTotal Number of Process in queue 2:\t");
-  
+    green();
     centre();
   	h=GetStdHandle(STD_OUTPUT_HANDLE);
   	xy=cursorpos(h);
@@ -186,7 +186,7 @@ void process() {
       if (p-> remaining_time == 0) {
 
         complete++;
-        p-> completion_time = time;
+        p-> completion_time = time+1;
         //find next shortest
         p = & default_struct;
         p-> remaining_time = INT_MAX;
@@ -219,7 +219,7 @@ void process() {
         q-> remaining_time--;
         flag_queue2=0;
         if (q-> remaining_time == 0) {
-          q-> completion_time = time;
+          q-> completion_time = time+1;
           complete++;
           quantum = 0;
 
@@ -247,13 +247,11 @@ void process() {
 void calculate() {
   int i;
   for (i = 0; i < number_of_process_in_queue1; i++) {
-    
-    queue1[i].waiting_time = queue1[i].completion_time - (queue1[i].arrival_time + queue1[i].burst_time)+1;
+    queue1[i].waiting_time = queue1[i].completion_time - (queue1[i].arrival_time + queue1[i].burst_time);
     queue1[i].turnaround_time = queue1[i].waiting_time + queue1[i].burst_time;
   }
   for (i = 0; i < number_of_process_in_queue2; i++) {
-    
-    queue2[i].waiting_time = queue2[i].completion_time - (queue2[i].arrival_time + queue2[i].burst_time)+1;
+    queue2[i].waiting_time = queue2[i].completion_time - (queue2[i].arrival_time + queue2[i].burst_time);
     queue2[i].turnaround_time = queue2[i].waiting_time + queue2[i].burst_time;
   }
 }
@@ -292,12 +290,14 @@ int main() {
   printf("\n\t\t\t\t\t\t\tQueue 2\n");
   display(queue2, index_queue2);
   }
-  printf("\n\n\nDo you want to continue?");
+  printf("\n\n\nDo you want to continue?     ");
   string s;
+  green();
   scanf("%s",s);
   if(strcmp(s,"yes")==0)
   {
     fullscreen();
+    cl;
   	continue;
   	
   }
