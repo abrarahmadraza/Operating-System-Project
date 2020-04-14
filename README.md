@@ -1,5 +1,5 @@
 # Project
-<p style= "color: red"> ## This code might be buggy use on your own risk</p>
+<span style="color:blue">This code might be buggy use on your own risktext</span>
 
 Q52.Design a scheduler with multilevel queue having two queues which will schedule the processes on the basis of pre-emptive shortest remaining processing time first algorithm (SROT) followed by a scheduling in which each process will get 2 units of time to execute. Also note that queue 1 has higher priority than queue2. Consider the following set of processes (for reference) with the arrival times and the CPU burst times in milliseconds.
 Pro	   AT       BT
